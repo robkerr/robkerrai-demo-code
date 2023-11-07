@@ -1,0 +1,4 @@
+az provider register --namespace Microsoft.MachineLearning
+az configure --defaults group=mldemo
+az configure --defaults workspace=rhkdemo
+az ml data create --name diabetes-data --path ./data

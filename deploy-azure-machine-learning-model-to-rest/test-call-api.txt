@@ -1,0 +1,31 @@
+az provider register --namespace Microsoft.MachineLearning
+az configure --defaults group=mldemo
+az configure --defaults workspace=rhkdemo
+az ml data create --name diabetes-data --path ./data
+az ml online-endpoint get-credentials -n diabetestest -g DeployEndpoint -w DeployEndpointDemo -o tsv --query primaryKey
+
+
+{
+  "input_data": [
+    [
+      7,115,47,52,35,41.51152348,0.079018568,23
+    ]
+  ],
+  "params": {}
+}
+
+{
+  "input_data": [
+    [
+      9,103,78,25,304,29.58219193,1.282869847,43
+    ]
+  ],
+  "params": {}
+}
+
+https://rhkdemo-atkof.eastus.inference.ml.azure.com/score
+
+curl --location --request POST $scoringUri \
+--header "Authorization: Bearer $accessToken" \
+--header "Content-Type: application/json" \
+--data-raw @endpoints/online/model-1/sample-request.json
