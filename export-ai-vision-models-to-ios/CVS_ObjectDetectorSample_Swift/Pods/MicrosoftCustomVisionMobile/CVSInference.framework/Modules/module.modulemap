@@ -1,0 +1,6 @@
+framework module CVSInference {
+    umbrella header "CVSInference.h"
+
+    export *
+    module * { export * }
+}

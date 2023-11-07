@@ -1,0 +1,16 @@
+PODS:
+  - MicrosoftCustomVisionMobile (1.0.0)
+
+DEPENDENCIES:
+  - MicrosoftCustomVisionMobile
+
+SPEC REPOS:
+  trunk:
+    - MicrosoftCustomVisionMobile
+
+SPEC CHECKSUMS:
+  MicrosoftCustomVisionMobile: 646022a7054247a0cd6c7d4505b8a4c7e5f427f8
+
+PODFILE CHECKSUM: ed54db5dccda92a1157882715c2ab48db70204e5
+
+COCOAPODS: 1.13.0
