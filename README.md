@@ -4,6 +4,8 @@ This repository contains source code created in my posts on https://robkerr.ai. 
 
 Each folder contains code related to a specific blog post. Below are links to the original posts:
 
+[Publish a Streamlit Data App with Docker and Azure Container Registry](https://robkerr.ai/publish-streamlit-app-docker-azure-container/)
+
 [Fabric Semantic Link: Power BI as a Machine Learning Data Source](https://robkerr.ai/fabric-semantic-link-power-bi-as-a-machine-learning-data-source/)
 
 [How to Use a Vector Database and Generative AI to Create a Custom Chatbot](https://robkerr.ai/generative-ai-chatbot-grounding-data-vector-text/)
@@ -15,5 +17,3 @@ Each folder contains code related to a specific blog post. Below are links to th
 [Deploy an Azure Machine Learning model to a REST endpoint](https://robkerr.ai/deploy-azure-machine-learning-model-to-rest/)
 
 [Deploying AI Vision Models to Apple iOS Devices](https://robkerr.ai/export-ai-vision-models-to-ios/)
-
-
