@@ -32,7 +32,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"azureblob\",\n  \"credentials\": {\n    \"connectionString\": \"DefaultEndpointsProtocol=https;AccountName=rhkdemo;AccountKey=96Po2nSyWDZDQCMBm1lib2hrL3Vrtc5V5FcNnXZ22qYpNQJmVcRhcLXiCYDWeU+drOhIobrRBDxy+AStXZ+1Ng==\"\n  },\n  \"container\": {\n    \"name\": \"aviationdocs\"\n  },\n  \"dataDeletionDetectionPolicy\": {\n    \"@odata.type\": \"#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy\",\n    \"softDeleteColumnName\": \"isDeleted\",\n    \"softDeleteMarkerValue\": \"True\"\n  }\n}"
+							"raw": "{\n  \"type\": \"azureblob\",\n  \"credentials\": {\n    \"connectionString\": \"DefaultEndpointsProtocol=https;AccountName=<storage account name>;AccountKey=<storage account SAS key>\"\n  },\n  \"container\": {\n    \"name\": \"<storage container name>\"\n  },\n  \"dataDeletionDetectionPolicy\": {\n    \"@odata.type\": \"#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy\",\n    \"softDeleteColumnName\": \"isDeleted\",\n    \"softDeleteMarkerValue\": \"True\"\n  }\n}"
 						},
 						"url": {
 							"raw": "{{SEARCH_ENDPOINT}}/datasources/{{DATA_SOURCE_NAME}}?api-version=2023-10-01-Preview",
