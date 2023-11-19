@@ -1,0 +1,537 @@
+{
+	"info": {
+		"_postman_id": "3c5a16ba-2c37-4908-a85b-81708cfad399",
+		"name": "Azure AI Embeddings",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31242702"
+	},
+	"item": [
+		{
+			"name": "Create Vector Index",
+			"item": [
+				{
+					"name": "Create Data Source",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"azureblob\",\n  \"credentials\": {\n    \"connectionString\": \"DefaultEndpointsProtocol=https;AccountName=rhkdemo;AccountKey=96Po2nSyWDZDQCMBm1lib2hrL3Vrtc5V5FcNnXZ22qYpNQJmVcRhcLXiCYDWeU+drOhIobrRBDxy+AStXZ+1Ng==\"\n  },\n  \"container\": {\n    \"name\": \"aviationdocs\"\n  },\n  \"dataDeletionDetectionPolicy\": {\n    \"@odata.type\": \"#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy\",\n    \"softDeleteColumnName\": \"isDeleted\",\n    \"softDeleteMarkerValue\": \"True\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/datasources/{{DATA_SOURCE_NAME}}?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"datasources",
+								"{{DATA_SOURCE_NAME}}"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Index",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"defaultScoringProfile\": null,\n  \"fields\": [\n    {\n      \"name\": \"chunk_id\",\n      \"type\": \"Edm.String\",\n      \"searchable\": true,\n      \"filterable\": true,\n      \"retrievable\": true,\n      \"sortable\": true,\n      \"facetable\": true,\n      \"key\": true,\n      \"indexAnalyzer\": null,\n      \"searchAnalyzer\": null,\n      \"analyzer\": \"keyword\",\n      \"normalizer\": null,\n      \"dimensions\": null,\n      \"vectorSearchProfile\": null,\n      \"synonymMaps\": []\n    },\n    {\n      \"name\": \"parent_id\",\n      \"type\": \"Edm.String\",\n      \"searchable\": true,\n      \"filterable\": true,\n      \"retrievable\": true,\n      \"sortable\": true,\n      \"facetable\": true,\n      \"key\": false,\n      \"indexAnalyzer\": null,\n      \"searchAnalyzer\": null,\n      \"analyzer\": null,\n      \"normalizer\": null,\n      \"dimensions\": null,\n      \"vectorSearchProfile\": null,\n      \"synonymMaps\": []\n    },\n    {\n      \"name\": \"chunk\",\n      \"type\": \"Edm.String\",\n      \"searchable\": true,\n      \"filterable\": false,\n      \"retrievable\": true,\n      \"sortable\": false,\n      \"facetable\": false,\n      \"key\": false,\n      \"indexAnalyzer\": null,\n      \"searchAnalyzer\": null,\n      \"analyzer\": null,\n      \"normalizer\": null,\n      \"dimensions\": null,\n      \"vectorSearchProfile\": null,\n      \"synonymMaps\": []\n    },\n    {\n      \"name\": \"title\",\n      \"type\": \"Edm.String\",\n      \"searchable\": true,\n      \"filterable\": true,\n      \"retrievable\": true,\n      \"sortable\": false,\n      \"facetable\": false,\n      \"key\": false,\n      \"indexAnalyzer\": null,\n      \"searchAnalyzer\": null,\n      \"analyzer\": null,\n      \"normalizer\": null,\n      \"dimensions\": null,\n      \"vectorSearchProfile\": null,\n      \"synonymMaps\": []\n    },\n    {\n      \"name\": \"vector\",\n      \"type\": \"Collection(Edm.Single)\",\n      \"searchable\": true,\n      \"filterable\": false,\n      \"retrievable\": true,\n      \"sortable\": false,\n      \"facetable\": false,\n      \"key\": false,\n      \"indexAnalyzer\": null,\n      \"searchAnalyzer\": null,\n      \"analyzer\": null,\n      \"normalizer\": null,\n      \"dimensions\": 1536,\n      \"vectorSearchProfile\": \"{{INDEX_NAME}}-profile\",\n      \"synonymMaps\": []\n    }\n  ],\n  \"scoringProfiles\": [],\n  \"corsOptions\": null,\n  \"suggesters\": [],\n  \"analyzers\": [],\n  \"normalizers\": [],\n  \"tokenizers\": [],\n  \"tokenFilters\": [],\n  \"charFilters\": [],\n  \"encryptionKey\": null,\n  \"similarity\": {\n    \"@odata.type\": \"#Microsoft.Azure.Search.BM25Similarity\",\n    \"k1\": null,\n    \"b\": null\n  },\n  \"semantic\": null,\n  \"vectorSearch\": {\n    \"algorithms\": [\n      {\n        \"name\": \"{{INDEX_NAME}}-algorithm\",\n        \"kind\": \"hnsw\",\n        \"hnswParameters\": {\n          \"metric\": \"cosine\",\n          \"m\": 4,\n          \"efConstruction\": 400,\n          \"efSearch\": 500\n        },\n        \"exhaustiveKnnParameters\": null\n      }\n    ],\n    \"profiles\": [\n      {\n        \"name\": \"{{INDEX_NAME}}-profile\",\n        \"algorithm\": \"{{INDEX_NAME}}-algorithm\",\n        \"vectorizer\": \"{{INDEX_NAME}}-vectorizer\"\n      }\n    ],\n    \"vectorizers\": [\n      {\n        \"name\": \"{{INDEX_NAME}}-vectorizer\",\n        \"kind\": \"azureOpenAI\",\n        \"azureOpenAIParameters\": {\n          \"resourceUri\": \"{{OPENAI_ENDPOINT}}\",\n          \"deploymentId\": \"ada-embedding\",\n          \"apiKey\": \"{{AZURE_OPENAI_KEY}}\",\n          \"authIdentity\": null\n        },\n        \"customWebApiParameters\": null\n      }\n    ]\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/indexes/{{INDEX_NAME}}?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"indexes",
+								"{{INDEX_NAME}}"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Skill Set",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Skillset to chunk documents and generate embeddings\",\n  \"skills\": [\n    {\n      \"@odata.type\": \"#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill\",\n      \"name\": \"#1\",\n      \"description\": null,\n      \"context\": \"/document/pages/*\",\n      \"resourceUri\": \"{{OPENAI_ENDPOINT}}\",\n      \"apiKey\": \"{{AZURE_OPENAI_KEY}}\",\n      \"deploymentId\": \"ada-embedding\",\n      \"inputs\": [\n        {\n          \"name\": \"text\",\n          \"source\": \"/document/pages/*\"\n        }\n      ],\n      \"outputs\": [\n        {\n          \"name\": \"embedding\",\n          \"targetName\": \"vector\"\n        }\n      ],\n      \"authIdentity\": null\n    },\n    {\n      \"@odata.type\": \"#Microsoft.Skills.Text.SplitSkill\",\n      \"name\": \"#2\",\n      \"description\": \"Split skill to chunk documents\",\n      \"context\": \"/document\",\n      \"defaultLanguageCode\": \"en\",\n      \"textSplitMode\": \"pages\",\n      \"maximumPageLength\": 2000,\n      \"pageOverlapLength\": 500,\n      \"maximumPagesToTake\": 0,\n      \"inputs\": [\n        {\n          \"name\": \"text\",\n          \"source\": \"/document/content\"\n        }\n      ],\n      \"outputs\": [\n        {\n          \"name\": \"textItems\",\n          \"targetName\": \"pages\"\n        }\n      ]\n    }\n  ],\n  \"cognitiveServices\": null,\n  \"knowledgeStore\": null,\n  \"indexProjections\": {\n    \"selectors\": [\n      {\n        \"targetIndexName\": \"{{INDEX_NAME}}\",\n        \"parentKeyFieldName\": \"parent_id\",\n        \"sourceContext\": \"/document/pages/*\",\n        \"mappings\": [\n          {\n            \"name\": \"chunk\",\n            \"source\": \"/document/pages/*\",\n            \"sourceContext\": null,\n            \"inputs\": []\n          },\n          {\n            \"name\": \"vector\",\n            \"source\": \"/document/pages/*/vector\",\n            \"sourceContext\": null,\n            \"inputs\": []\n          },\n          {\n            \"name\": \"title\",\n            \"source\": \"/document/metadata_storage_name\",\n            \"sourceContext\": null,\n            \"inputs\": []\n          }\n        ]\n      }\n    ],\n    \"parameters\": {\n      \"projectionMode\": \"skipIndexingParentDocuments\"\n    }\n  },\n  \"encryptionKey\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/skillsets/{{INDEX_NAME}}-skillset?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"skillsets",
+								"{{INDEX_NAME}}-skillset"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Indexer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Prefer",
+								"value": "True",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dataSourceName\": \"{{DATA_SOURCE_NAME}}\",\n  \"skillsetName\": \"{{INDEX_NAME}}-skillset\",\n  \"targetIndexName\": \"{{INDEX_NAME}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/indexers/{{INDEX_NAME}}-indexer?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"indexers",
+								"{{INDEX_NAME}}-indexer"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Indexer Get Status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/indexers/{{INDEX_NAME}}-indexer/search.status?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"indexers",
+								"{{INDEX_NAME}}-indexer",
+								"search.status"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Query the Index",
+			"item": [
+				{
+					"name": "Full Text Search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"search\": \"aviation\",\n    \"queryType\": \"simple\",\n    \"searchMode\": \"all\",\n    \"searchFields\": \"title\",\n    \"select\": \"title\",\n    \"top\": \"10\",\n    \"count\": \"true\"\n}"
+						},
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/indexes/{{INDEX_NAME}}/docs/search?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"indexes",
+								"{{INDEX_NAME}}",
+								"docs",
+								"search"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vector Search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"select\": \"title, chunk, vector\",\n    \"vectorQueries\": [\n        {\n            \"kind\": \"text\",\n            \"text\": \"What is the aviation authority for The United States?\",\n            \"fields\": \"vector\",\n            \"k\": 5\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/indexes/{{INDEX_NAME}}/docs/search?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"indexes",
+								"{{INDEX_NAME}}",
+								"docs",
+								"search"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Miscellaneous",
+			"item": [
+				{
+					"name": "Run Indexer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/indexers/{{INDEX_NAME}}-indexer/search.run?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"indexers",
+								"{{INDEX_NAME}}-indexer",
+								"search.run"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Indexer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/indexers/{{INDEX_NAME}}-indexer/search.reset?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"indexers",
+								"{{INDEX_NAME}}-indexer",
+								"search.reset"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/indexes('{{INDEX_NAME}}')/search.stats?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"indexes('{{INDEX_NAME}}')",
+								"search.stats"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Data Sources",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-ms-client-request-id",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "api-key",
+								"value": "{{AZURE_AI_SEARCH_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{SEARCH_ENDPOINT}}/datasources?api-version=2023-10-01-Preview",
+							"host": [
+								"{{SEARCH_ENDPOINT}}"
+							],
+							"path": [
+								"datasources"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2023-10-01-Preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

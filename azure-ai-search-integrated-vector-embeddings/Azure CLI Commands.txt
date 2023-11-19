@@ -1,0 +1,8 @@
+az group create -n <resource group name>
+
+az search service create --name <service name> \
+--resource-group <resource group name> \
+--sku Free \
+--partition-count 1 --replica-count 1
+
+az search admin-key show -g <resource group name> --service-name <service name>
