@@ -4,6 +4,8 @@ This repository contains source code created in my posts on https://robkerr.ai. 
 
 Each folder contains code related to a specific blog post. Below are links to the original posts:
 
+[Create Generative AI Apps with Azure AI Search Integrated Vector Embeddings](https://robkerr.ai/azure-ai-search-integrated-vector-embeddings/)
+
 [Publish a Streamlit Data App with Docker and Azure Container Registry](https://robkerr.ai/publish-streamlit-app-docker-azure-container/)
 
 [Fabric Semantic Link: Power BI as a Machine Learning Data Source](https://robkerr.ai/fabric-semantic-link-power-bi-as-a-machine-learning-data-source/)
