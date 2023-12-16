@@ -1,8 +1,5 @@
 import streamlit as st
 import os
-import textwrap
-from IPython.display import display
-from IPython.display import Markdown
 import google.generativeai as genai
 
 # Initialize Gemini-Pro 
@@ -16,11 +13,6 @@ def role_to_streamlit(role):
   else:
     return role
 
-# Reformat bulleted lists into markdown format
-def to_markdown(text):
-  text = text.replace('•', '  *')
-  return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
-
 # Add a Gemini Chat history object to Streamlit session state
 if "chat" not in st.session_state:
     st.session_state.chat = model.start_chat(history = [])
@@ -31,7 +23,7 @@ st.title("Chat with Google Gemini-Pro!")
 # Display chat messages from history above current input box
 for message in st.session_state.chat.history:
     with st.chat_message(role_to_streamlit(message.role)):
-        st.markdown(to_markdown(message.parts[0].text).data)
+        st.markdown(message.parts[0].text)
 
 # Accept user's next message, add to context, resubmit context to Gemini
 if prompt := st.chat_input("I possess a well of knowledge. What would you like to know?"):
@@ -42,6 +34,5 @@ if prompt := st.chat_input("I possess a well of knowledge. What would you like t
     response = st.session_state.chat.send_message(prompt) 
     
     # Display last 
-    response_markdown = to_markdown(response.text).data
     with st.chat_message("assistant"):
-        st.markdown(response_markdown)
+        st.markdown(response.text)
