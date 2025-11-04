@@ -1,0 +1,7 @@
+python-dotenv
+openai
+azure-ai-projects
+azure-identity
+agent-framework-azure-ai
+azure-ai-documentintelligence
+
