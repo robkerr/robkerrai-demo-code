@@ -1,0 +1,6 @@
+transformers
+peft
+datasets
+trl==0.19.1
+bitsandbytes==0.48
+
