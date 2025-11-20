@@ -1,0 +1,70 @@
+services:
+  # 1. Text LLM: NVIDIA FP8 Llama 3.1 8B via vLLM
+  llm-fp8:
+    image: nvcr.io/nvidia/vllm:25.09-py3
+    container_name: llm-fp8
+    restart: unless-stopped
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    environment:
+      - HF_TOKEN=${HF_TOKEN}          # optional, if needed
+    shm_size: 16gb
+    volumes:
+      - ${HOME}/.cache/huggingface:/root/.cache/huggingface
+    ports:
+      - "8000:8000"
+    command: >
+      vllm serve nvidia/Llama-3.1-8B-Instruct-FP8
+      --quantization modelopt
+      --gpu-memory-utilization 0.45
+      --max-model-len 4096
+      --max-num-seqs 32
+      --port 8000
+
+  # 2. Image Embedding: nvidia/evl-vit-large-patch14-clip via FastAPI
+  img-embed-evl:
+    image: nvcr.io/nvidia/pytorch:25.09-py3
+    container_name: img-embed-evl
+    restart: unless-stopped
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+    shm_size: 16gb
+    working_dir: /workspace
+    volumes:
+      - ./img-embed-api:/workspace
+      - ${HOME}/.cache/huggingface:/root/.cache/huggingface
+    ports:
+      - "8100:8000"
+    command: >
+      bash -lc "
+      pip install --no-cache-dir -r requirements.txt &&
+      uvicorn server:app --host 0.0.0.0 --port 8000
+      "
+    # 3. Vector DB API: Chroma + FastAPI
+  vector-db-api:
+    image: python:3.12-slim
+    container_name: vector-db-api
+    restart: unless-stopped
+    working_dir: /workspace
+    volumes:
+      - ./vector-api:/workspace
+      - ./vector-data:/data       # persistent vector store
+    environment:
+      - CHROMA_DB_PATH=/data/chroma
+    ports:
+      - "8200:8000"
+    command: >
+      bash -lc "
+      pip install --no-cache-dir -r requirements.txt &&
+      uvicorn server:app --host 0.0.0.0 --port 8000
+      "

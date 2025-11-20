@@ -1,0 +1,16 @@
+curl http://doc:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "nvidia/Llama-3.1-8B-Instruct-FP8",
+    "messages": [{"role": "user", "content": "Explain the DGX Spark in one sentence."}],
+    "max_tokens": 64
+  }'
+
+  curl http://doc:8100/v1/embeddings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "image_urls": [
+      "https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg"
+    ]
+  }'
+  
